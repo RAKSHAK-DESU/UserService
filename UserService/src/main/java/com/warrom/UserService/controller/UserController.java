@@ -3,6 +3,7 @@ package com.warrom.UserService.controller;
 import com.warrom.UserService.model.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -34,8 +35,8 @@ public class UserController {
 
 
 
-    @RequestMapping("/user/{uid}")
-    public User getUserById(@PathVariable int uid){
+    @RequestMapping("/user")
+    public User getUserById(@RequestParam int uid){
         return ul.stream()
                 .filter(u->u.getUid()==uid)
                 .findFirst()
