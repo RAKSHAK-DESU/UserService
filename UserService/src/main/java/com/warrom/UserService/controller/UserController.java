@@ -1,10 +1,7 @@
 package com.warrom.UserService.controller;
 
 import com.warrom.UserService.model.User;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +32,14 @@ public class UserController {
 
 
 
-    @RequestMapping("/user")
+    @RequestMapping("/user/{uid}")
     public User getUserById(@RequestParam int uid){
         return ul.stream()
                 .filter(u->u.getUid()==uid)
                 .findFirst()
                 .orElseThrow(()->
                         new RuntimeException("User not found with ID"+uid));
-    }
+    }  //get mapping
 
     @RequestMapping("/username/{uname}")
     public User getUserByName(@PathVariable String uname){
@@ -51,6 +48,16 @@ public class UserController {
                 .findFirst()
                 .orElseThrow(()->
                         new RuntimeException("User not found wiit Name"+uname));
+    }
+
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public User insertUser(@RequestBody User usr){
+        ul.add(usr);
+        return  ul.stream()
+                .filter(u-> u.getUid()== usr.getUid())
+                .findFirst()
+                .orElseThrow(()->
+                        new RuntimeException("Unable to Save User"));
     }
 
 
