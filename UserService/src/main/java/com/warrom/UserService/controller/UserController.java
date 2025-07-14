@@ -1,5 +1,6 @@
 package com.warrom.UserService.controller;
 
+
 import com.warrom.UserService.model.User;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,7 +61,34 @@ public class UserController {
                         new RuntimeException("Unable to Save User"));
     }
 
+    @RequestMapping(value = "/update/{uid}", method =RequestMethod.PUT)
+    public User updateUser(@PathVariable int uid,@RequestBody User usr) {
+        User existing = ul.stream()
+                .filter(u -> u.getUid() == uid)
+                .findFirst()
+                .orElseThrow(() ->
+                        new RuntimeException("User not found with ID" + uid));
 
+        if (usr.getUname()!=null)
+            existing.setUname(usr.getUname());
+        if (usr.getAddr()!=null)
+            existing.setAddr(usr.getAddr());
 
+        return existing;
+
+    }
+
+    @RequestMapping(value = "/delete/{uid}",method = RequestMethod.DELETE)
+    public String deleteUser(@PathVariable int uid){
+        User existing = ul.stream()
+                .filter(u -> u.getUid() == uid)
+                .findFirst()
+                .orElseThrow(() ->
+                        new RuntimeException("User not found with ID" + uid));
+
+        ul.remove(existing);
+
+        return  "User Deleted with ID::"+uid;
+    }
 
 }
